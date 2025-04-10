@@ -41,6 +41,107 @@ app.get('/api/greet', (req, res) => {
 });
 
 // 6
+let user = {
+  id: 1,
+  name: 'Alice',
+  email: 'alice@example.com',
+};
+
+app.patch('/api/user', (req, res) => {
+  if (req.body.name) {
+    user.name = req.body.name;
+    res.json({ message: `Användarens namn är nu uppdaterat till ${user.name}` });
+  } else {
+    res.status(400).json({ message: 'Namn saknas i begäran'})
+  }
+});
+
+// 7
+const products = [
+  { id: 1, name: 'Penna', price: 10 },
+  { id: 2, name: 'Blyertspenna', price: 5 }
+];
+
+// app.get('/api/products', (req, res) => {
+//   res.json(products);
+// })
+
+app.get('/api/products/:id', (req, res) => {
+  const productID = parseInt(req.params.id);
+  const product = products.find(p => p.id === productID);
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404).json({ message: 'Produkt inte hittad' });
+  }
+});
+
+// 8
+app.get('/api/products', (req, res) => {
+  const { sort } = req.query;
+
+  let sortedProducts = [...products];
+
+  if (sort === 'name') {
+    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+  } else if  (sort === 'price') {
+    sortedProducts.sort((a, b) => a.price - b.price);
+  }
+
+  res.json(sortedProducts); 
+})
+
+// 9
+app.post('/api/products' , (req, res) => {
+  const { name, price } = req.body;
+
+  if (!name || !price) {
+    return res.status(400).json({ message: 'Både name och price måste vara med i begäran!'})
+  }
+
+  const newProduct = {
+    id: products.length +1,
+    name: name,
+    price: price
+  };
+
+  products.push(newProduct);
+
+  res.json(products)
+})
+
+// 10
+app.put('/api/products/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { name, price } = req.body;
+
+  const product = products.find(p => p.id === id);
+
+  if (!product) {
+    return res.status(404).json({ message: 'Produkten hittades inte'});
+  }
+
+  if (name) product.name = name;
+  if (price) product.price = price;
+
+  res.json({ message: 'Produkten uppdaterdes', product});
+});
+
+// 11
+app.delete('/api/products/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+
+  const index = products.findIndex(p => p.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: 'Produkten hittades inte'});
+  }
+
+  products.splice(index, 1)
+
+  res.json ( { message: 'Produkten har tagits bort', products});
+});
 
 
 app.listen(PORT, () => {
