@@ -17,6 +17,10 @@ app.get('/api/welcome', (req, res) => {
   res.send('Checka dina headers! 👀')
 });
 
+app.get('/api/headers', (req, res) => {
+  res.json(req.headers);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
