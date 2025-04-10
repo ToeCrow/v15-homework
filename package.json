@@ -5,21 +5,22 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
-    "type": "git",
+    "type": "module",
     "url": "git+https://github.com/ToeCrow/v15-homework.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/ToeCrow/v15-homework/issues"
   },
   "homepage": "https://github.com/ToeCrow/v15-homework#readme",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^5.1.0"
   }
 }

@@ -1,0 +1,151 @@
+Individuella eller parkodnings övningar:
+
+💾 Kom ihåg: Testa endpoints i Postman
+
+🧵 Tips
+
+Använd console.log(req.body) för att se vad som skickas
+
+I Postman: Kom ihåg att använda Headers -> Content-Type: application/json
+
+Se till att starta om servern när du gör kodändringar (eller använd nodemon eller --watch flaggan)
+
+------------------------------------------
+🧩 Lätta Övningar:
+
+1: /api/welcome – Returnera en hälsning med res.header():
+
+-------------------------------------------
+2: /api/headers – Returnera alla inkommande headers.
+
+-------------------------------------------
+3:  /api/name
+Skapa en ny route som returnerar ditt namn.
+
+-------------------------------------------
+4:  /api/greet/:name
+Använd req.params för att returnera ett personligt meddelande.
+
+// GET /api/greet/Alice
+res.json({ message: `Hej ${req.params.name}!` });
+
+-------------------------------------------
+5:  /api/greet
+Använd req.query för att hämta ett namn via ?name=Mandus och svara med:
+{ "message": "Hej, Mandus!" }
+
+-------------------------------------------
+-------------------------------------------
+-------------------------------------------
+🔧 Medelsvåra Övningar 
+
+6: Skapa en PATCH-route
+
+Uppdatera endast namn på en användare
+
+-------------------------------------------
+7: /api/products
+Skapa ett memory-baserat produkt-API. Lägg in en hårdkodad array med produkter.
+
+const products = [
+  { id: 1, name: 'Penna', price: 10 },
+  { id: 2, name: 'Blyertspenna', price: 5 }
+];
+
+GET /api/products → returnerar hela listan
+
+GET /api/products/:id → returnerar en produkt med matchande id
+
+-------------------------------------------
+8: /api/products?sort=name
+
+Använd req.query.sort för att sortera produkterna på name eller price.
+
+-------------------------------------------
+9: /api/products (POST)
+
+Lägg till en ny produkt till listan via req.body.
+
+Om name eller price saknas – returnera status 400.
+
+-------------------------------------------
+10: /api/products/:id (PUT)
+
+Uppdatera en befintlig produkt baserat på id.
+
+-------------------------------------------
+11:  /api/products/:id (DELETE)
+
+Ta bort en produkt med specifikt id. Returnera ny uppdaterad lista.
+
+-------------------------------------------
+-------------------------------------------
+-------------------------------------------
+🚀 Svåra Övningar
+
+12:  /api/validate-name
+
+Skapa en POST-route där användaren skickar in { "name": "Bo" }.
+
+Om namnet är minst 3 tecken: 200 OK
+
+Om kortare: 400 Bad Request + error
+
+-------------------------------------------
+13:  /api/ping
+
+Returnera ett svar med statuskod 200 och en custom header:
+res.setHeader("X-Server-Status", "active");
+res.status(200).json({ message: "Pong!" });
+
+-------------------------------------------
+14:  Statuskod-övning med kontroll
+
+Skapa en GET-route /api/check/:value där du:
+
+Returnerar 200 OK om value === "ok"
+
+Annars returnerar 400 eller 404
+
+-------------------------------------------
+15: Bygg ut användar-CRUD med validering i route
+
+Skapa POST /api/users som:
+
+Kollar att name finns i req.body
+
+Om inte: returnerar 400
+
+Om ok: skapar användare
+
+-------------------------------------------
+16: CRUD med nested data
+Lägg till en "pets"-array till varje användare:
+
+{ "id": 1, "name": "Alice", "pets": [{ "type": "dog", "name": "Tirre" }] }
+
+Lägg till endpoints:
+
+POST /api/users/:id/pets
+
+GET /api/users/:id/pets
+
+-------------------------------------------
+17:  /api/products/stats
+Skapa en route som returnerar statistik över produkterna:
+{
+  "totalProducts": 5,
+  "averagePrice": 12.5
+}
+
+(Bra övning i att loopa igenom products och returnera ett samlat svar.)
+
+-------------------------------------------
+-------------------------------------------
+-------------------------------------------
+✅ Reflektion och Avslutning
+- Hur säkerställer vi att våra endpoints returnerar rätt kod och svar?
+
+- Vad kan vi förbättra i vår API-design?
+
+- Hur kan detta kopplas till riktiga backend-projekt?
