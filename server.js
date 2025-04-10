@@ -1,12 +1,17 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { pingCounter, poweredBy, logIpAdress, requireName } from './middleware.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+//! 2 + 3 
+app.use(express.json());   // Hantera JSON-data
+app.use(poweredBy);        // Lägg till "X-Powered-By"-headern
+app.use(logIpAdress); 
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to the jungle')
@@ -143,6 +148,25 @@ app.delete('/api/products/:id', (req, res) => {
   res.json ( { message: 'Produkten har tagits bort', products});
 });
 
+// ! Middleware
+//! 1
+app.get('/api/ping', pingCounter, (req, res) => {
+  res.json({message: 'pong'});
+});
+
+//! 4
+let users = [];
+
+app.post('/api/users', requireName, (req, res) => {
+  const { name, email } = req.body;
+  const newUser = { name, email };
+  users.push(newUser);
+  res.status(201).json({ message: `User ${name} created!`})
+})
+
+app.get('/api/users', (req, res) => {
+  res.json(users);
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,0 +1,105 @@
+📌 Övningar – Middleware
+
+🧩 Lätta
+
+1. pingCounter middleware
+
+🟢 Syfte: Förstå att middleware kan lagra tillstånd (i RAM).
+
+🛠️ Instruktion: Skapa en variabel pingCount och en middleware som ökar räknaren varje gång /api/ping anropas.
+
+✔️ Använd på route:
+app.get("/api/ping", pingCounter, (req, res) => {
+  res.json({ message: "pong" });
+});
+
+----------------------------------------
+2. poweredBy middleware
+
+🟢 Syfte: Lägg till headers i alla svar.
+
+🛠️ Instruktion: Skapa en middleware som lägger till res.setHeader
+("X-Powered-By", "Chas").
+
+✔️ Använd globalt:
+app.use(poweredBy);
+
+----------------------------------------
+3. Skapa en enkel middleware för IP-loggning
+
+ ➤ Syfte: Lära sig req.ip, koppla till verkliga användningsfall.
+
+Uppgift: Skapa en middleware som loggar IP-adressen för varje inkommande request.
+
+Bonus: Spara loggarna till en fil.
+
+Tips: Använd req.ip för att hämta IP-adressen.
+
+----------------------------------------
+----------------------------------------
+----------------------------------------
+🔧 Medel
+4. requireName middleware
+
+🟡 Syfte: Validering av request body.
+
+🛠️ Skapa en middleware som kontrollerar att req.body.name finns, annars returnera 400 Bad Request.
+
+✔️ Använd före POST /api/users
+
+----------------------------------------
+5. logHeaders middleware
+
+🟡 Syfte: Inspektera inkommande headers.
+
+🛠️ Logga alla headers från req.headers i konsolen.
+
+✔️ Använd på valfri route för test
+
+----------------------------------------
+6. Autentiseringsmiddleware
+
+Uppgift: Implementera en middleware som kollar efter en API-nyckel i request-headern.
+
+Krav:
+Om nyckeln saknas eller är felaktig, returnera status 401 med ett felmeddelande.
+
+Om nyckeln är korrekt, fortsätt till nästa middleware.
+
+Bonus: Lägg till miljövariabler för att hantera API-nyckeln.
+
+----------------------------------------
+----------------------------------------
+----------------------------------------
+🚀 Avancerade
+
+7. validateUser middleware
+
+🔴 Syfte: Sätta regler för input-data.
+
+🛠️ Kontrollera att name är minst 3 tecken. Annars returnera 400 Bad Request.
+
+✔️ Använd före POST /api/users
+
+----------------------------------------
+8. Rate limiter middleware 
+
+Uppgift: Skapa en rate limiter som tillåter max 10 requests per minut per IP-adress.
+
+Funktionalitet:
+
+Använd en minnesbaserad databas som Map för att hålla koll på antalet requests per IP.
+
+Returnera status 429 om antalet requests överstiger gränsen.
+
+Bonus: Implementera en mer avancerad lösning med Redis för att hantera fler klienter.
+
+
+----------------------------------------
+9. notFoundHandler – hantera ogiltiga routes
+
+🔴 Syfte: Hantera alla icke-matchande routes i slutet av filen.
+
+🛠️ Middleware som returnerar 404 och ett meddelande.
+
+✔️ Ska ligga efter alla andra routes
