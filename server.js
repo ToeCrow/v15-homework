@@ -1,16 +1,17 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { pingCounter, poweredBy, logIpAdress, requireName } from './middleware.js';
+import { pingCounter, poweredBy, logIpAdress, requireName, logHeaders, authenticateApiKey  } from './middleware.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-//! 2 + 3 
+//! 2 + 3 + 5
 app.use(express.json());   // Hantera JSON-data
 app.use(poweredBy);        // Lägg till "X-Powered-By"-headern
 app.use(logIpAdress); 
+// app.use(logHeaders);
 
 
 app.get('/', (req, res) => {
@@ -23,8 +24,8 @@ app.get('/api/welcome', (req, res) => {
   res.send('Checka dina headers! 👀')
 });
 
-// 2
-app.get('/api/headers', (req, res) => {
+// 2 //! 5
+app.get('/api/headers', logHeaders, (req, res) => {
   res.json(req.headers);
 });
 
@@ -162,12 +163,23 @@ app.post('/api/users', requireName, (req, res) => {
   const newUser = { name, email };
   users.push(newUser);
   res.status(201).json({ message: `User ${name} created!`})
-})
+});
 
 app.get('/api/users', (req, res) => {
   res.json(users);
-})
+});
+
+//! 6
+app.get('/api/secure-data', authenticateApiKey, (req, res) => {
+  res.json({ message: 'Du har tillgång till den skyddade datan!' });
+});
+
+// Annan offentlig route
+app.get('/api/public', (req, res) => {
+  res.json({ message: 'Denna route är offentlig och kräver ingen autentisering.' });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+

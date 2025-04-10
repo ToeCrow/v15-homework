@@ -1,4 +1,7 @@
 import fs from 'fs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 let pingCount = 0;
 
@@ -36,5 +39,26 @@ export const requireName = (req, res, next) => {
   if (!req.body.name) {
     return res.status(400).json({message: 'Name is required in the request body'});
   }
+  next();
+}
+
+// 5
+export const logHeaders = (req, res, next) => {
+  console.log('Request Headers:', req.headers);
+  next();
+}
+
+// 6
+export const authenticateApiKey = (req, res, next) => {
+  const apiKey = req.headers['x-api.key'];
+
+  if (!apiKey) {
+    return res.status(401).json({ messag: 'API-nyckel saknas!'});
+  }
+
+  if (apiKey !== process.env.API_KEY) {
+    return res.status(401).json({message: 'Ogiltig API-nyckel!'});
+  }
+
   next();
 }
