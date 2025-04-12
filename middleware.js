@@ -36,7 +36,7 @@ export const logIpAdress = (req, res, next) => {
 
 // 4
 export const requireName = (req, res, next) => {
-  if (!req.body.name) {
+  if (!req.body.name || !req.body.email) {
     return res.status(400).json({message: 'Name is required in the request body'});
   }
   next();
